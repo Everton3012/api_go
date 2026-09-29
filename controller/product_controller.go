@@ -1,11 +1,30 @@
 package controller
 
-import "github.com/gin-gonic/gin"
+import (
+	"api_go/model"
+	"api_go/usecase"
+	"net/http"
 
-type ProductController struct{}
+	"github.com/gin-gonic/gin"
+)
 
-func NewProductController() *ProductController {
-	return &ProductController{}
+type ProductController struct {
+	productUseCase usecase.ProductUsecase
 }
 
-func (pc *ProductController) GetProducts(c *gin.Context) {}
+func NewProductController(usecase usecase.ProductUsecase) ProductController {
+	return ProductController{
+		productUseCase: usecase,
+	}
+}
+
+func (p *ProductController) GetProducts(ctx *gin.Context) {
+	products := []model.Product{
+		{
+			ID:    1,
+			Name:  "Batata frita",
+			Price: 20,
+		},
+	}
+	ctx.JSON(http.StatusOK, products)
+}
